@@ -1,0 +1,5 @@
+"#","Reference","Qty","Value","Footprint","DNP"
+"1","J1","1","GY-GPS6MV2","Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical",""
+"2","J2","1","COM-MSD","Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical",""
+"3","J3","1","LiPo Charger","Connector_PinSocket_2.54mm:PinSocket_1x08_P2.54mm_Vertical",""
+"4","U1","1","WeMos_D1_mini","Module:WEMOS_D1_mini_light",""

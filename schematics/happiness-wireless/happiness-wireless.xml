@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="E">
+  <design>
+    <source>/home/matti/projektit/happiness-wireless/schematics/happiness-wireless/happiness-wireless.kicad_sch</source>
+    <date>Sun 03 Dec 2023 07:45:58 PM EET</date>
+    <tool>Eeschema 7.0.9-7.0.9~ubuntu22.04.1</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>happiness-wireless.kicad_sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+        <comment number="5" value=""/>
+        <comment number="6" value=""/>
+        <comment number="7" value=""/>
+        <comment number="8" value=""/>
+        <comment number="9" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="J1">
+      <value>GY-GPS6MV2</value>
+      <footprint>Connector_PinSocket_2.54mm:PinSocket_1x04_P2.54mm_Vertical</footprint>
+      <libsource lib="Connector" part="Conn_01x04_Pin" description="Generic connector, single row, 01x04, script generated"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="happiness-wireless.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x04, script generated"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>26ba09e0-2e5b-4848-8eed-47da9389377a</tstamps>
+    </comp>
+    <comp ref="J2">
+      <value>COM-MSD</value>
+      <footprint>Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical</footprint>
+      <libsource lib="Connector" part="Conn_01x06_Pin" description="Generic connector, single row, 01x06, script generated"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="happiness-wireless.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x06, script generated"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>286aa2a6-e686-4bf1-a394-e81489192581</tstamps>
+    </comp>
+    <comp ref="J3">
+      <value>LiPo Charger</value>
+      <footprint>Connector_PinSocket_2.54mm:PinSocket_1x08_P2.54mm_Vertical</footprint>
+      <libsource lib="Connector" part="Conn_01x08_Pin" description="Generic connector, single row, 01x08, script generated"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="happiness-wireless.kicad_sch"/>
+      <property name="ki_description" value="Generic connector, single row, 01x08, script generated"/>
+      <property name="ki_keywords" value="connector"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3817e627-490c-4a2c-b848-5c8d48e54165</tstamps>
+    </comp>
+    <comp ref="U1">
+      <value>WeMos_D1_mini</value>
+      <footprint>Module:WEMOS_D1_mini_light</footprint>
+      <datasheet>https://wiki.wemos.cc/products:d1:d1_mini#documentation</datasheet>
+      <libsource lib="MCU_Module" part="WeMos_D1_mini" description="32-bit microcontroller module with WiFi"/>
+      <property name="Sheetname" value=""/>
+      <property name="Sheetfile" value="happiness-wireless.kicad_sch"/>
+      <property name="ki_description" value="32-bit microcontroller module with WiFi"/>
+      <property name="ki_keywords" value="ESP8266 WiFi microcontroller ESP8266EX"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9d07910a-222e-40ce-ac24-faadb495815c</tstamps>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector" part="Conn_01x04_Pin">
+      <description>Generic connector, single row, 01x04, script generated</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J1</field>
+        <field name="Value">GY-GPS6MV2</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="GND" type="passive"/>
+        <pin num="2" name="TX" type="passive"/>
+        <pin num="3" name="RX" type="passive"/>
+        <pin num="4" name="VCC" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="Conn_01x06_Pin">
+      <description>Generic connector, single row, 01x06, script generated</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J2</field>
+        <field name="Value">COM-MSD</field>
+        <field name="Footprint">Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="3.3V" type="passive"/>
+        <pin num="2" name="CS" type="passive"/>
+        <pin num="3" name="MOSI" type="passive"/>
+        <pin num="4" name="CLK" type="passive"/>
+        <pin num="5" name="MISO" type="passive"/>
+        <pin num="6" name="GND" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector" part="Conn_01x08_Pin">
+      <description>Generic connector, single row, 01x08, script generated</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J3</field>
+        <field name="Value">LiPo Charger</field>
+        <field name="Datasheet">~</field>
+      </fields>
+      <pins>
+        <pin num="1" name="3V3" type="passive"/>
+        <pin num="2" name="EN" type="passive"/>
+        <pin num="3" name="GND" type="passive"/>
+        <pin num="4" name="5V" type="passive"/>
+        <pin num="5" name="GND" type="passive"/>
+        <pin num="6" name="BAT" type="passive"/>
+        <pin num="7" name="GND" type="passive"/>
+        <pin num="8" name="USB" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="MCU_Module" part="WeMos_D1_mini">
+      <description>32-bit microcontroller module with WiFi</description>
+      <docs>https://wiki.wemos.cc/products:d1:d1_mini#documentation</docs>
+      <footprints>
+        <fp>WEMOS*D1*mini*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">WeMos_D1_mini</field>
+        <field name="Footprint">Module:WEMOS_D1_mini_light</field>
+        <field name="Datasheet">https://wiki.wemos.cc/products:d1:d1_mini#documentation</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~{RST}" type="input"/>
+        <pin num="2" name="A0" type="input"/>
+        <pin num="3" name="D0" type="bidirectional"/>
+        <pin num="4" name="SCK/D5" type="bidirectional"/>
+        <pin num="5" name="MISO/D6" type="bidirectional"/>
+        <pin num="6" name="MOSI/D7" type="bidirectional"/>
+        <pin num="7" name="CS/D8" type="bidirectional"/>
+        <pin num="8" name="3V3" type="power_out"/>
+        <pin num="9" name="5V" type="power_in"/>
+        <pin num="10" name="GND" type="power_in"/>
+        <pin num="11" name="D4" type="bidirectional"/>
+        <pin num="12" name="D3" type="bidirectional"/>
+        <pin num="13" name="SDA/D2" type="bidirectional"/>
+        <pin num="14" name="SCL/D1" type="bidirectional"/>
+        <pin num="15" name="RX" type="input"/>
+        <pin num="16" name="TX" type="output"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector">
+      <uri>/usr/share/kicad/symbols//Connector.kicad_sym</uri>
+    </library>
+    <library logical="MCU_Module">
+      <uri>/usr/share/kicad/symbols//MCU_Module.kicad_sym</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Earth">
+      <node ref="J1" pin="1" pinfunction="GND" pintype="passive"/>
+      <node ref="J2" pin="6" pinfunction="GND" pintype="passive"/>
+      <node ref="U1" pin="10" pinfunction="GND" pintype="power_in"/>
+    </net>
+    <net code="2" name="unconnected-(J1-RX-Pad3)">
+      <node ref="J1" pin="3" pinfunction="RX" pintype="passive"/>
+    </net>
+    <net code="3" name="unconnected-(J1-TX-Pad2)">
+      <node ref="J1" pin="2" pinfunction="TX" pintype="passive"/>
+    </net>
+    <net code="4" name="unconnected-(J1-VCC-Pad4)">
+      <node ref="J1" pin="4" pinfunction="VCC" pintype="passive"/>
+    </net>
+    <net code="5" name="unconnected-(J2-3.3V-Pad1)">
+      <node ref="J2" pin="1" pinfunction="3.3V" pintype="passive"/>
+    </net>
+    <net code="6" name="unconnected-(J2-CLK-Pad4)">
+      <node ref="J2" pin="4" pinfunction="CLK" pintype="passive"/>
+    </net>
+    <net code="7" name="unconnected-(J2-CS-Pad2)">
+      <node ref="J2" pin="2" pinfunction="CS" pintype="passive"/>
+    </net>
+    <net code="8" name="unconnected-(J2-MISO-Pad5)">
+      <node ref="J2" pin="5" pinfunction="MISO" pintype="passive"/>
+    </net>
+    <net code="9" name="unconnected-(J2-MOSI-Pad3)">
+      <node ref="J2" pin="3" pinfunction="MOSI" pintype="passive"/>
+    </net>
+    <net code="10" name="unconnected-(J3-3V3-Pad1)">
+      <node ref="J3" pin="1" pinfunction="3V3" pintype="passive"/>
+    </net>
+    <net code="11" name="unconnected-(J3-5V-Pad4)">
+      <node ref="J3" pin="4" pinfunction="5V" pintype="passive"/>
+    </net>
+    <net code="12" name="unconnected-(J3-BAT-Pad6)">
+      <node ref="J3" pin="6" pinfunction="BAT" pintype="passive"/>
+    </net>
+    <net code="13" name="unconnected-(J3-EN-Pad2)">
+      <node ref="J3" pin="2" pinfunction="EN" pintype="passive"/>
+    </net>
+    <net code="14" name="unconnected-(J3-GND-Pad3)">
+      <node ref="J3" pin="3" pinfunction="GND" pintype="passive"/>
+    </net>
+    <net code="15" name="unconnected-(J3-GND-Pad5)">
+      <node ref="J3" pin="5" pinfunction="GND" pintype="passive"/>
+    </net>
+    <net code="16" name="unconnected-(J3-GND-Pad7)">
+      <node ref="J3" pin="7" pinfunction="GND" pintype="passive"/>
+    </net>
+    <net code="17" name="unconnected-(J3-USB-Pad8)">
+      <node ref="J3" pin="8" pinfunction="USB" pintype="passive"/>
+    </net>
+    <net code="18" name="unconnected-(U1-3V3-Pad8)">
+      <node ref="U1" pin="8" pinfunction="3V3" pintype="power_out"/>
+    </net>
+    <net code="19" name="unconnected-(U1-5V-Pad9)">
+      <node ref="U1" pin="9" pinfunction="5V" pintype="power_in"/>
+    </net>
+    <net code="20" name="unconnected-(U1-A0-Pad2)">
+      <node ref="U1" pin="2" pinfunction="A0" pintype="input"/>
+    </net>
+    <net code="21" name="unconnected-(U1-CS{slash}D8-Pad7)">
+      <node ref="U1" pin="7" pinfunction="CS/D8" pintype="bidirectional"/>
+    </net>
+    <net code="22" name="unconnected-(U1-D0-Pad3)">
+      <node ref="U1" pin="3" pinfunction="D0" pintype="bidirectional"/>
+    </net>
+    <net code="23" name="unconnected-(U1-D3-Pad12)">
+      <node ref="U1" pin="12" pinfunction="D3" pintype="bidirectional"/>
+    </net>
+    <net code="24" name="unconnected-(U1-D4-Pad11)">
+      <node ref="U1" pin="11" pinfunction="D4" pintype="bidirectional"/>
+    </net>
+    <net code="25" name="unconnected-(U1-MISO{slash}D6-Pad5)">
+      <node ref="U1" pin="5" pinfunction="MISO/D6" pintype="bidirectional"/>
+    </net>
+    <net code="26" name="unconnected-(U1-MOSI{slash}D7-Pad6)">
+      <node ref="U1" pin="6" pinfunction="MOSI/D7" pintype="bidirectional"/>
+    </net>
+    <net code="27" name="unconnected-(U1-RX-Pad15)">
+      <node ref="U1" pin="15" pinfunction="RX" pintype="input"/>
+    </net>
+    <net code="28" name="unconnected-(U1-SCK{slash}D5-Pad4)">
+      <node ref="U1" pin="4" pinfunction="SCK/D5" pintype="bidirectional"/>
+    </net>
+    <net code="29" name="unconnected-(U1-SCL{slash}D1-Pad14)">
+      <node ref="U1" pin="14" pinfunction="SCL/D1" pintype="bidirectional"/>
+    </net>
+    <net code="30" name="unconnected-(U1-SDA{slash}D2-Pad13)">
+      <node ref="U1" pin="13" pinfunction="SDA/D2" pintype="bidirectional"/>
+    </net>
+    <net code="31" name="unconnected-(U1-TX-Pad16)">
+      <node ref="U1" pin="16" pinfunction="TX" pintype="output"/>
+    </net>
+    <net code="32" name="unconnected-(U1-~{RST}-Pad1)">
+      <node ref="U1" pin="1" pinfunction="~{RST}" pintype="input"/>
+    </net>
+  </nets>
+</export>
