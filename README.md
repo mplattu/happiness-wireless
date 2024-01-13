@@ -20,6 +20,19 @@ The device is a ESP8266-based microcontroller with following components:
 * power switch
 * [Transparent box](https://www.aliexpress.com/item/4000081189255.html), see `doc/aliexpress_airlgee_box.jpeg`
 
+## Error Codes
+
+Errors codes are signalled as number of beeps after a S-O-S beep. The error message is also written to the
+serial console (see `signalBeepAndHalt()`).
+
+Error codes:
+
+1. Failed to initialise SD writer
+2. Failed to initialise GPS serial device
+3. LittleFS mount failed (required by Otadrive)
+4. Could not open data file for reading
+6. Failed to upload data to server
+
 ## Copyright Notice
 
 The documents in `doc/` folder are subject to their own copyrights.
