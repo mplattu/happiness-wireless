@@ -1,20 +1,12 @@
-#include <ESP8266WiFi.h>
 #include <SPI.h>
 #include <SD.h>
 #include <TinyGPSPlus.h>
 #include <SoftwareSerial.h>
+#include <ioris-poc.h>
 
-#define PIN_BUZZER 15               // D8
-#define PIN_WIRELESS_BUTTON_RED 0   // D3
-#define PIN_WIRELESS_BUTTON_GREEN 2 // D4
-#define PIN_CS 16                   // D0
-#define PIN_GPS_RX 5                // D1
-#define PIN_GPS_TX 4                // D2
-#define PIN_WIFI_BUTTON A0          // A0 (analog)
-
-#define BEEP_DELAY_MINIMAL 100
-#define BEEP_DELAY_SHORT 500
-#define BEEP_DELAY_LONG 3000
+#include "../include/constants.cpp"
+#include "../include/beep.cpp"
+#include "../include/wifi.cpp"
 
 TinyGPSPlus gps;
 SoftwareSerial gps_serial(PIN_GPS_RX, PIN_GPS_TX);
@@ -38,61 +30,8 @@ bool buttonWifiPressed() {
     return false;
 }
 
-void beep(int beepDelay) {
-    digitalWrite(PIN_BUZZER, HIGH);
-    delay(beepDelay);
-    digitalWrite(PIN_BUZZER, LOW);
-}
-
-void beep(int beepDelay, int beepTimes) {
-    for (int n=0; n < beepTimes; n++) {
-        beep(beepDelay);
-        delay(beepDelay);
-    }
-}
-
-void writeErrorFile(String errorMessage) {
-    File f = SD.open("error.log", FILE_WRITE);
-    if (f) {
-        f.println(errorMessage);
-        f.close();
-    }
-}
-
-void signalBeepSos() {
-    for (int n=0; n < 3; n++) {
-        beep(100);
-        delay(100);
-    }
-
-    for (int n=0; n < 3; n++) {
-        beep(500);
-        delay(100);
-    }
-
-    for (int n=0; n < 3; n++) {
-        beep(100);
-        delay(100);
-    }
-}
-
-void signalBeepAndHalt(uint8_t errorCode, String errorMessage) {
-    writeErrorFile(errorMessage);
-
-    while (1) {
-        Serial.print(errorMessage);
-        Serial.print(" #");
-        Serial.println(errorCode);
-
-        signalBeepSos();
-        delay(BEEP_DELAY_LONG);
-        beep(BEEP_DELAY_SHORT, (int) errorCode);
-        delay(BEEP_DELAY_LONG);
-    }
-}
-
 void appendDataFile(char * action) {
-    File f = SD.open("data.log", FILE_WRITE);
+    File f = SD.open(FILENAME_DATA, FILE_WRITE);
     if (f) {
         f.print("{\"action\":\"");
         f.print(action);
@@ -105,7 +44,7 @@ void appendDataFile(char * action) {
 }
 
 void appendDataFile(float latitude, float longitude, float altitude, float speed, int satellites, char * datetime, char * action) {
-    File f = SD.open("data.log", FILE_WRITE);
+    File f = SD.open(FILENAME_DATA, FILE_WRITE);
     if (f) {
         f.print("{\"latitude\":");
         f.print(latitude, 7);
@@ -132,7 +71,7 @@ void appendDataFile(float latitude, float longitude, float altitude, float speed
 
 void setup() {
     Serial.begin(115200);
-    Serial.print("Started");
+    Serial.println("Started");
 
     pinMode(PIN_BUZZER, OUTPUT);
     pinMode(PIN_WIRELESS_BUTTON_RED, INPUT_PULLUP);
@@ -150,8 +89,11 @@ void setup() {
         signalBeepAndHalt(2, "Failed to initialise GPS serial device");
     }
 
+    wifiOnSetup();
+
     beep(BEEP_DELAY_SHORT);
     Serial.println("Initialised");
+    iorisSendMessage("Initialised");
 }
 
 float latitude = 0;
@@ -214,5 +156,9 @@ void loop() {
     if (buttonWifiPressed()) {
         appendDataFile((char *) "wifi");
         beep(BEEP_DELAY_MINIMAL, 5);
+
+        wifiOnButton();
+
+        beep(BEEP_DELAY_LONG, 3);
     }
 }
