@@ -1,3 +1,4 @@
 .pio
 .vscode/
 schematics/happiness-wireless/happiness-wireless-backups/
+settings.cpp
