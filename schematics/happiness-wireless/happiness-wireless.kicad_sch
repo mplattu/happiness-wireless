@@ -6,7 +6,7 @@
 
   (title_block
     (title "Location Buttons (Wireless)")
-    (date "2024-01-01")
+    (date "2024-01-13")
     (rev "2")
     (company "University of Helsinki")
     (comment 1 "v2: A) 3v3 from microcontroller B) Changed Chg conn USB and 5V")
@@ -1993,7 +1993,7 @@
     (property "Reference" "D2" (at 130.81 124.1425 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "LED" (at 130.81 126.6825 90)
+    (property "Value" "LED GRE" (at 130.81 126.6825 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "LED_THT:LED_D5.0mm_Clear" (at 128.27 127 0)
@@ -2439,7 +2439,7 @@
     (property "Reference" "D1" (at 182.88 124.1425 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "LED" (at 182.88 126.6825 90)
+    (property "Value" "LED RED" (at 182.88 126.6825 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "LED_THT:LED_D5.0mm_Clear" (at 180.34 127 0)
