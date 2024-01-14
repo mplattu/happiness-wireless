@@ -1,7 +1,7 @@
 #ifndef WIFI_CPP
 #define WIFI_CPP
 
-#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
 #include <ESP8266HTTPClient.h>
 #include <otadrive_esp.h>
 #include <ioris-poc.h>
@@ -13,26 +13,30 @@
 
 void onOtaUpdateProgress(int progress, int total);
 std::unique_ptr<BearSSL::WiFiClientSecure> wifiClient(new BearSSL::WiFiClientSecure);
+ESP8266WiFiMulti wifiMulti;
+const uint32_t wifiConnectTimeoutMs = 5000;
 
 void wifiPowerOn() {
+    /*
     if (WiFi.status() == WL_CONNECTED) {
         return;
     }
-
+    */
+   
     WiFi.forceSleepWake();
     delay(1);
     WiFi.mode(WIFI_STA);
-    WiFi.begin(WIFI_SSID, WIFI_PASS);
+    wifiMulti.addAP(WIFI_SSID, WIFI_PASS);
 
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(100);
-        yield();
-        beep(BEEP_DELAY_MINIMAL);
-        yield();
+    if (wifiMulti.run(wifiConnectTimeoutMs) == WL_CONNECTED) {
+        Serial.print(F("Wifi Connected, IP: "));
+        Serial.println(WiFi.localIP());
+    }
+    else {
+        Serial.println("Wifi not connected");
     }
 
-    Serial.print(F("Wifi Connected, IP: "));
-    Serial.println(WiFi.localIP());
+    Serial.println("");
 }
 
 void wifiPowerOff() {

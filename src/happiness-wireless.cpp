@@ -144,6 +144,7 @@ void loop() {
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, (char *) "red");
         beep(BEEP_DELAY_SHORT, 2);
         buttonPressedRed = false;
+        iorisSendMessage("RED");
     }
 
     if (buttonPressedGreen) {
@@ -151,6 +152,7 @@ void loop() {
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, (char *) "green");
         beep(BEEP_DELAY_SHORT, 3);
         buttonPressedGreen = false;
+        iorisSendMessage("GREEN");
     }
 
     if (buttonWifiPressed()) {
