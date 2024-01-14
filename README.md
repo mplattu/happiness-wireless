@@ -31,7 +31,6 @@ Error codes:
 2. Failed to initialise GPS serial device
 3. LittleFS mount failed (required by Otadrive)
 4. Could not open data file for reading
-6. Failed to upload data to server
 
 ## Copyright Notice
 

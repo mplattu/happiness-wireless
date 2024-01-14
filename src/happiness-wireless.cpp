@@ -2,11 +2,9 @@
 #include <SD.h>
 #include <TinyGPSPlus.h>
 #include <SoftwareSerial.h>
-#include <ioris-poc.h>
 
 #include "../include/constants.cpp"
 #include "../include/beep.cpp"
-#include "../include/wifi.cpp"
 
 TinyGPSPlus gps;
 SoftwareSerial gps_serial(PIN_GPS_RX, PIN_GPS_TX);
@@ -22,8 +20,8 @@ void IRAM_ATTR interruptHandlerButtonRed () {
     buttonPressedRed = true;
 }
 
-bool buttonWifiPressed() {
-    if (analogRead(PIN_WIFI_BUTTON) > 1000) {
+bool buttonDataUploadPressed() {
+    if (analogRead(PIN_DATA_UPLOAD_BUTTON) > 1000) {
         return true;
     }
 
@@ -69,6 +67,31 @@ void appendDataFile(float latitude, float longitude, float altitude, float speed
     }
 }
 
+void printDataFile() {
+    File f = SD.open(FILENAME_DATA, FILE_READ);
+    if (f) {
+        Serial.println(F("---Data file starts"));
+
+        char fileBuffer[256];
+        int bytesread;
+
+        while (f.available()) {
+            bytesread = f.readBytesUntil('\n', fileBuffer, sizeof(fileBuffer)-1);
+            fileBuffer[bytesread] = '\0';
+
+            Serial.println(fileBuffer);
+
+            yield();
+        }
+
+        f.close();
+
+        Serial.println(F("---Data file ends"));
+
+        SD.remove(FILENAME_DATA);
+    }
+}
+
 void setup() {
     Serial.begin(115200);
     Serial.println("Started");
@@ -89,11 +112,9 @@ void setup() {
         signalBeepAndHalt(2, "Failed to initialise GPS serial device");
     }
 
-    wifiOnSetup();
-
     beep(BEEP_DELAY_SHORT);
+    appendDataFile((char *) "initialised");
     Serial.println("Initialised");
-    iorisSendMessage("Initialised");
 }
 
 float latitude = 0;
@@ -153,12 +174,12 @@ void loop() {
         buttonPressedGreen = false;
     }
 
-    if (buttonWifiPressed()) {
-        appendDataFile((char *) "wifi");
+    if (buttonDataUploadPressed()) {
+        appendDataFile((char *) "printDataFile");
         beep(BEEP_DELAY_MINIMAL, 5);
 
-        wifiOnButton();
+        printDataFile();
 
-        beep(BEEP_DELAY_LONG, 3);
+        beep(BEEP_DELAY_MINIMAL, 5);
     }
 }
