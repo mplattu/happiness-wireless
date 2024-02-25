@@ -6,20 +6,24 @@
 #include <SD.h>
 #include "constants.cpp"
 
-#define BEEP_DELAY_MINIMAL 100
+#define BEEP_DELAY_BETWEEN 100
 #define BEEP_DELAY_SHORT 500
-#define BEEP_DELAY_LONG 3000
+#define BEEP_DELAY_LONG 2000
 
-void beep(int beepDelay) {
+void beep(int beepDelay, int betweenDelay) {
     digitalWrite(PIN_BUZZER, HIGH);
     delay(beepDelay);
     digitalWrite(PIN_BUZZER, LOW);
+    delay(betweenDelay);
+}
+
+void beep(int beepDelay) {
+    beep(beepDelay, BEEP_DELAY_BETWEEN);
 }
 
 void beep(int beepDelay, int beepTimes) {
     for (int n=0; n < beepTimes; n++) {
         beep(beepDelay);
-        delay(beepDelay);
     }
 }
 
@@ -33,18 +37,15 @@ void writeErrorFile(String errorMessage) {
 
 void signalBeepSos() {
     for (int n=0; n < 3; n++) {
-        beep(100);
-        delay(100);
+        beep(100, 100);
     }
 
     for (int n=0; n < 3; n++) {
-        beep(500);
-        delay(100);
+        beep(500, 100);
     }
 
     for (int n=0; n < 3; n++) {
-        beep(100);
-        delay(100);
+        beep(100, 100);
     }
 }
 

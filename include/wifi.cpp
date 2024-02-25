@@ -1,71 +1,54 @@
 #ifndef WIFI_CPP
 #define WIFI_CPP
 
-#include <ESP8266WiFiMulti.h>
+#include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
-#include <otadrive_esp.h>
-#include <ioris-poc.h>
 
 #include "constants.cpp"
 #include "../settings.cpp"
 #include "beep.cpp"
 #include "memory.cpp"
 
-void onOtaUpdateProgress(int progress, int total);
 std::unique_ptr<BearSSL::WiFiClientSecure> wifiClient(new BearSSL::WiFiClientSecure);
-ESP8266WiFiMulti wifiMulti;
-const uint32_t wifiConnectTimeoutMs = 5000;
+const unsigned int wifiConnectTimeoutMs = 60000;
 
-void wifiPowerOn() {
-    /*
+bool wifiPowerOn(const char * wifiSsid, const char * wifiPassword) {
     if (WiFi.status() == WL_CONNECTED) {
-        return;
+        return true;
     }
-    */
-   
+
     WiFi.forceSleepWake();
-    delay(1);
+    yield();
     WiFi.mode(WIFI_STA);
-    wifiMulti.addAP(WIFI_SSID, WIFI_PASS);
+    WiFi.begin(wifiSsid, wifiPassword);
+ 
+    unsigned int wifiTimeout = millis() + wifiConnectTimeoutMs;
 
-    if (wifiMulti.run(wifiConnectTimeoutMs) == WL_CONNECTED) {
-        Serial.print(F("Wifi Connected, IP: "));
-        Serial.println(WiFi.localIP());
-    }
-    else {
-        Serial.println("Wifi not connected");
-    }
+    while (WiFi.status() != WL_CONNECTED) {
+        beep(100, 100);
+        Serial.print(".");
 
-    Serial.println("");
+        if (wifiTimeout < millis()) {
+            Serial.println("Timeout");
+            return false;
+        }
+    }
+ 
+    Serial.println(WiFi.localIP());
+    return true;
 }
 
 void wifiPowerOff() {
-    wifiPowerOn();
-/*  
     WiFi.disconnect();
     WiFi.mode(WIFI_OFF);
     WiFi.forceSleepBegin();
-    delay(1);
-*/
+    yield();
 }
 
-void wifiOnSetup() {
-    iorisSetUrl("http://harkko.lattu.biz/ioris/");
-    wifiPowerOff();
-
-    if (!LittleFS.begin()) {
-        LittleFS.format();
-        signalBeepAndHalt(3, "LittleFS mount failed");
-    }
-
-    OTADRIVE.setInfo(OTADRIVE_APIKEY, F(VERSION));
-    OTADRIVE.onUpdateFirmwareProgress(onOtaUpdateProgress);
-
-    wifiClient->setInsecure();
-}
-
-void wifiSendData() {
-    iorisSendMessage("Starting to send data");
+void wifiSendData(const char * logServerUrl) {
+    std::unique_ptr<BearSSL::WiFiClientSecure> client(new BearSSL::WiFiClientSecure);
+    client->setInsecure();
+    HTTPClient https;
 
     File f = SD.open(FILENAME_DATA, FILE_READ);
     if (f) {
@@ -77,8 +60,6 @@ void wifiSendData() {
         bool dataUploadOk = true;
 
         while (f.available()) {
-            iorisSendMessageMemorystatus();
-
             bytesread = f.readBytesUntil('\n', fileBuffer, sizeof(fileBuffer)-1);
             fileBuffer[bytesread] = '\0';
 
@@ -90,13 +71,11 @@ void wifiSendData() {
 
             yield();
 
-            HTTPClient https;
-
-            https.begin(*wifiClient, LOG_SERVER);
+            https.begin(*client, logServerUrl);
             https.addHeader("Content-Type", "application/x-www-form-urlencoded");
             int responseCode = https.POST(httpBuffer);
 
-            if (responseCode != 200) {
+            if (responseCode != HTTP_CODE_OK) {
                 Serial.print("Got unacceptable response code: ");
                 Serial.println(responseCode);
                 dataUploadOk = false;
@@ -104,77 +83,35 @@ void wifiSendData() {
 
             https.end();
 
-            iorisSendMessageMemorystatus();
-
             yield();
         }
 
         f.close();
 
         if (dataUploadOk) {
-            SD.remove(FILENAME_DATA);
+            // SD.remove(FILENAME_DATA);
         }
         else {
-            signalBeepAndHalt(6, "Failed to upload data to server");
+            signalBeepAndHalt(7, "Failed to upload data to server (https)");
         }
     }
     else {
         signalBeepAndHalt(4, "Could not open data file for reading");
     }
-
-    iorisSendMessage("Data sent");
 }
 
-void wifiOnButton() {
-    iorisSendMessage(F("Wifi activity started"));
-
-    iorisSendMessageMemorystatus();
-
-    iorisSendMessage(F("Trying to connect to wifi"));
-
+void wifiOnButton(const char * wifiSsid, const char * wifiPassword, const char * logServerUrl) {
     Serial.print(F("Setting Wifi mode ON: "));
-    wifiPowerOn();
+    if (! wifiPowerOn(wifiSsid, wifiPassword)) {
+        signalBeepAndHalt(6, "Failed to upload data to server (wifi)");
+    }
     Serial.println("OK");
 
-/*
-    Serial.print(F("Sending alive signal: "));
-    OTADRIVE.sendAlive();
-    Serial.println(F("OK"));
-
-    memoryPrintMemoryStatus();
-*/
-
-    iorisSendMessage(F("Checking OTA update"));
-    updateInfo inf = OTADRIVE.updateFirmwareInfo();
-
-    iorisSendMessageMemorystatus();
-
-    if (inf.available) {
-        Serial.printf("New version available: %s, %d bytes\n", inf.version.c_str(), inf.size);
-        iorisSendMessage(F("Starting OTA update"));
-        //OTADRIVE.updateFirmware();
-        iorisSendMessage(F("Skipping OTA update"));
-        //iorisSendMessage(F("Finished OTA update"));
-    }
-    else {
-        iorisSendMessage("No new firmware available");
-    }
-
-    memoryPrintMemoryStatus();
-
-    wifiSendData();
-
-    memoryPrintMemoryStatus();
+    wifiSendData(logServerUrl);
 
     Serial.print(F("Setting wifi mode OFF: "));
     wifiPowerOff();
     Serial.println(F("OK"));
-
-    iorisSendMessage(F("Wifi activity finished"));
-}
-
-void onOtaUpdateProgress(int progress, int total) {
-    Serial.printf("Download: %d of %d   \r", progress, total);
 }
 
 #endif

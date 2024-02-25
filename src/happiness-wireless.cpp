@@ -2,7 +2,6 @@
 #include <SD.h>
 #include <TinyGPSPlus.h>
 #include <SoftwareSerial.h>
-#include <ioris-poc.h>
 
 #include "../include/constants.cpp"
 #include "../include/beep.cpp"
@@ -89,11 +88,8 @@ void setup() {
         signalBeepAndHalt(2, "Failed to initialise GPS serial device");
     }
 
-    wifiOnSetup();
-
     beep(BEEP_DELAY_SHORT);
     Serial.println("Initialised");
-    iorisSendMessage("Initialised");
 }
 
 float latitude = 0;
@@ -144,7 +140,6 @@ void loop() {
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, (char *) "red");
         beep(BEEP_DELAY_SHORT, 2);
         buttonPressedRed = false;
-        iorisSendMessage("RED");
     }
 
     if (buttonPressedGreen) {
@@ -152,15 +147,16 @@ void loop() {
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, (char *) "green");
         beep(BEEP_DELAY_SHORT, 3);
         buttonPressedGreen = false;
-        iorisSendMessage("GREEN");
     }
 
     if (buttonWifiPressed()) {
         appendDataFile((char *) "wifi");
-        beep(BEEP_DELAY_MINIMAL, 5);
+        beep(BEEP_DELAY_SHORT, 5);
 
-        wifiOnButton();
+        wifiOnButton(WIFI_SSID, WIFI_PASS, LOG_SERVER_URL);
 
         beep(BEEP_DELAY_LONG, 3);
+
+        appendDataFile((char *) "data upload succeeded");
     }
 }
