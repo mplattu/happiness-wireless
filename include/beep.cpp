@@ -16,7 +16,7 @@ void beep(int beepDelay) {
     digitalWrite(PIN_BUZZER, LOW);
 }
 
-void beep(int beepDelay, int beepTimes) {
+void beepTimes(int beepDelay, int beepTimes) {
     for (int n=0; n < beepTimes; n++) {
         beep(beepDelay);
         delay(beepDelay);
@@ -58,7 +58,7 @@ void signalBeepAndHalt(uint8_t errorCode, String errorMessage) {
 
         signalBeepSos();
         delay(BEEP_DELAY_LONG);
-        beep(BEEP_DELAY_SHORT, (int) errorCode);
+        beepTimes(BEEP_DELAY_SHORT, (int) errorCode);
         delay(BEEP_DELAY_LONG);
     }
 }

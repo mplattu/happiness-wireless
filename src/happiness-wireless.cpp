@@ -1,7 +1,12 @@
-#include <SPI.h>
-#include <SD.h>
+#include <Arduino.h>
+
 #include <TinyGPSPlus.h>
 #include <SoftwareSerial.h>
+
+#include <otadrive_esp.h>
+
+#include <SPI.h>
+#include <SD.h>
 
 #include "../include/constants.cpp"
 #include "../include/beep.cpp"
@@ -94,7 +99,8 @@ void printDataFile() {
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("Started");
+    Serial.print("Started version ");
+    Serial.println(VERSION);
 
     pinMode(PIN_BUZZER, OUTPUT);
     pinMode(PIN_WIRELESS_BUTTON_RED, INPUT_PULLUP);
@@ -112,9 +118,18 @@ void setup() {
         signalBeepAndHalt(2, "Failed to initialise GPS serial device");
     }
 
+    if (!LittleFS.begin()) {
+        Serial.println("LittleFS Mount Failed");
+        LittleFS.format();
+        signalBeepAndHalt(5, "LittleFS mount failed, reboot the device");
+    }
+
+    OTADRIVE.setInfo(OTADRIVE_API_KEY, VERSION);
+    OTADRIVE.onUpdateFirmwareProgress(wifiOnOTAUpdateProgress);
+
     beep(BEEP_DELAY_SHORT);
-    appendDataFile((char *) "initialised");
-    Serial.println("Initialised");
+    Serial.print("Initialised version ");
+    Serial.println(VERSION);
 }
 
 float latitude = 0;
@@ -163,23 +178,22 @@ void loop() {
     if (buttonPressedRed) {
         Serial.println("RED");
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, (char *) "red");
-        beep(BEEP_DELAY_SHORT, 2);
+        beepTimes(BEEP_DELAY_SHORT, 2);
         buttonPressedRed = false;
     }
 
     if (buttonPressedGreen) {
         Serial.println("GREEN");
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, (char *) "green");
-        beep(BEEP_DELAY_SHORT, 3);
+        beepTimes(BEEP_DELAY_SHORT, 3);
         buttonPressedGreen = false;
     }
 
-    if (buttonDataUploadPressed()) {
-        appendDataFile((char *) "printDataFile");
-        beep(BEEP_DELAY_MINIMAL, 5);
+    if (buttonWifiPressed()) {
+        appendDataFile((char *) "wifi");
 
-        printDataFile();
+        wifiOnButton(WIFI_SSID, WIFI_PASS, LOG_SERVER_URL);
 
-        beep(BEEP_DELAY_MINIMAL, 5);
+        appendDataFile((char *) "data upload succeeded");
     }
 }

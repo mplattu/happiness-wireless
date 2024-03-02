@@ -20,6 +20,35 @@ The device is a ESP8266-based microcontroller with following components:
 * power switch
 * [Transparent box](https://www.aliexpress.com/item/4000081189255.html), see `doc/aliexpress_airlgee_box.jpeg`
 
+## Operation
+
+When booting, the unit initialises GPS and microSD card. In case of error, the device reports
+the error code (see below). A successful initialisation process reports with one short beep.
+
+After this the device starts the normal operation. Here, it receives the GPS data and waits an user
+action.
+* Pressing the RED button is acknowledged by two short signals.
+* Pressing the GREEN button is acknowledged by three short signals.
+* Pressing the WiFi button starts the data upload (see below).
+
+Pressing the RED/GREEN button writes the last received GPS information to log file.
+
+## Data Upload
+
+The data upload process uploads the log data to server. After an successful upload the local
+log files are removed. Signals during the upload process
+ * Pressing the WiFi button is acknowledged by five short signals.
+ * When trying to connect to the WiFi the unit sends short signals.
+ * If the device cannot connect to the WiFi network, the error code 6 is communicated.
+ * After an successful upload the device sends three short signals.
+ * An failed upload is communicated by error code 7. In this case the WiFi connection was successful
+   but the log server could not be contacted. The local data will be kept intact.
+
+## Firmware Update with OTADRIVE
+
+* Make sure your `OTADRIVE_API_KEY` is set in `settings.cpp`
+* Don't forget to update `VERSION` number in `constants.cpp` when building a new firmware version
+
 ## Error Codes
 
 Errors codes are signalled as number of beeps after a S-O-S beep. The error message is also written to the
@@ -31,6 +60,9 @@ Error codes:
 2. Failed to initialise GPS serial device
 3. LittleFS mount failed (required by Otadrive)
 4. Could not open data file for reading
+5. LittleFS mount failed, reboot the device
+6. Failed to upload data to server (wifi connection)
+7. Failed to upload data to server (https connection)
 
 ## Copyright Notice
 

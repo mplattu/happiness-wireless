@@ -12,4 +12,8 @@
 #define FILENAME_DATA "data.log"
 #define FILENAME_ERROR "error.log"
 
+// VERSION is used for Otadrive updates
+#define VERSION "0.0.5"
+#define FILESYS LittleFS
+
 #endif

@@ -1,0 +1,11 @@
+// Create the settings file "settings.cpp" based on this sample file
+
+// Wifi settings
+const char * WIFI_SSID = "greentravel";
+const char * WIFI_PASS = "greentravel";
+
+// Server receiving and storing device log data
+const char * LOG_SERVER = "https://server.com/happiness/server.php";
+
+// OTADRIVE API KEY from Product Overview tab
+const char * OTADRIVE_API_KEY = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeeee";
