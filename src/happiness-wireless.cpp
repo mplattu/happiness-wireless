@@ -42,7 +42,7 @@ void appendDataFile(char * action) {
     }
 }
 
-void appendDataFile(float latitude, float longitude, float altitude, float speed, int satellites, char * datetime, char * action) {
+void appendDataFile(float latitude, float longitude, float altitude, float speed, int satellites, char * datetime, unsigned long locationUpdatedTime, char * action) {
     File f = SD.open(FILENAME_DATA, FILE_WRITE);
     if (f) {
         f.print("{\"latitude\":");
@@ -57,6 +57,8 @@ void appendDataFile(float latitude, float longitude, float altitude, float speed
         f.print(satellites);
         f.print(",\"timestamp\":\"");
         f.print(datetime);
+        f.print(",\"locationUpdated\":\"");
+        f.print(locationUpdatedTime);
         f.print("\",\"action\":\"");
         f.print(action);
         f.print("\"");
@@ -92,6 +94,8 @@ void setup() {
     Serial.println("Initialised");
 }
 
+unsigned long locationUpdated = 0;
+
 float latitude = 0;
 float longitude = 0;
 float altitude = 0;
@@ -110,6 +114,7 @@ void loop() {
     if (gps.location.isUpdated()) {
         latitude = gps.location.lat();
         longitude = gps.location.lng();
+        locationUpdated = millis();
     }
 
     if (gps.altitude.isUpdated()) {
@@ -137,14 +142,16 @@ void loop() {
 
     if (buttonPressedRed) {
         Serial.println("RED");
-        appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, (char *) "red");
+        unsigned long locationUpdatedTime = millis() - locationUpdated;
+        appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, locationUpdatedTime, (char *) "red");
         beep(BEEP_DELAY_SHORT, 2);
         buttonPressedRed = false;
     }
 
     if (buttonPressedGreen) {
         Serial.println("GREEN");
-        appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, (char *) "green");
+        unsigned long locationUpdatedTime = millis() - locationUpdated;
+        appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, locationUpdatedTime, (char *) "green");
         beep(BEEP_DELAY_SHORT, 3);
         buttonPressedGreen = false;
     }
