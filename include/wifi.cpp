@@ -25,7 +25,7 @@ bool wifiPowerOn(const char * wifiSsid, const char * wifiPassword) {
     unsigned int wifiTimeout = millis() + wifiConnectTimeoutMs;
 
     while (WiFi.status() != WL_CONNECTED) {
-        beep(100, 100);
+        beep(100);
         Serial.print(".");
 
         if (wifiTimeout < millis()) {

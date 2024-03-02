@@ -10,15 +10,11 @@
 #define BEEP_DELAY_SHORT 500
 #define BEEP_DELAY_LONG 2000
 
-void beep(int beepDelay, int betweenDelay) {
+void beep(int beepDelay) {
     digitalWrite(PIN_BUZZER, HIGH);
     delay(beepDelay);
     digitalWrite(PIN_BUZZER, LOW);
-    delay(betweenDelay);
-}
-
-void beep(int beepDelay) {
-    beep(beepDelay, BEEP_DELAY_BETWEEN);
+    delay(BEEP_DELAY_BETWEEN);
 }
 
 void beep(int beepDelay, int beepTimes) {
