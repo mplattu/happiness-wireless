@@ -90,6 +90,12 @@ void setup() {
         signalBeepAndHalt(2, "Failed to initialise GPS serial device");
     }
 
+    String wifiMacString = WiFi.macAddress();
+    appendDataFile((char *) "boot");
+    appendDataFile((char *) wifiMacString.c_str());
+    appendDataFile((char *) __DATE__);
+    appendDataFile((char *) __TIME__);
+
     beep(BEEP_DELAY_SHORT, 3);
     Serial.println("Initialised");
 }
