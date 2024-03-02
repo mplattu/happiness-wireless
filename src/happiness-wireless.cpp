@@ -90,7 +90,7 @@ void setup() {
         signalBeepAndHalt(2, "Failed to initialise GPS serial device");
     }
 
-    beep(BEEP_DELAY_SHORT);
+    beep(BEEP_DELAY_SHORT, 3);
     Serial.println("Initialised");
 }
 
@@ -144,7 +144,7 @@ void loop() {
         Serial.println("RED");
         unsigned long locationUpdatedTime = millis() - locationUpdated;
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, locationUpdatedTime, (char *) "red");
-        beep(BEEP_DELAY_SHORT, 2);
+        beep(BEEP_DELAY_LONG, 1);
         buttonPressedRed = false;
     }
 
@@ -152,13 +152,13 @@ void loop() {
         Serial.println("GREEN");
         unsigned long locationUpdatedTime = millis() - locationUpdated;
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, locationUpdatedTime, (char *) "green");
-        beep(BEEP_DELAY_SHORT, 3);
+        beep(BEEP_DELAY_SHORT, 2);
         buttonPressedGreen = false;
     }
 
     if (buttonWifiPressed()) {
         appendDataFile((char *) "wifi");
-        beep(BEEP_DELAY_SHORT, 5);
+        beep(BEEP_DELAY_LONG, 3);
 
         wifiOnButton(WIFI_SSID, WIFI_PASS, LOG_SERVER_URL);
 
