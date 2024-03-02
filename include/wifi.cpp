@@ -89,7 +89,7 @@ void wifiSendData(const char * logServerUrl) {
         f.close();
 
         if (dataUploadOk) {
-            // SD.remove(FILENAME_DATA);
+            SD.remove(FILENAME_DATA);
         }
         else {
             signalBeepAndHalt(7, "Failed to upload data to server (https)");
