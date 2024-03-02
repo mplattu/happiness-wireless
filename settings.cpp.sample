@@ -5,4 +5,4 @@ const char * WIFI_SSID = "greentravel";
 const char * WIFI_PASS = "greentravel";
 
 // Server receiving and storing device log data
-const char * LOG_SERVER = "https://server.com/happiness/server.php";
+const char * LOG_SERVER_URL = "https://server.com/happiness/server.php";
