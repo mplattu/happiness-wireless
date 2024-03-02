@@ -23,12 +23,12 @@ The device is a ESP8266-based microcontroller with following components:
 ## Operation
 
 When booting, the unit initialises GPS and microSD card. In case of error, the device reports
-the error code (see below). A successful initialisation process reports with one short beep.
+the error code (see below). A successful initialisation process reports with three short beeps.
 
 After this the device starts the normal operation. Here, it receives the GPS data and waits an user
 action.
-* Pressing the RED button is acknowledged by two short signals.
-* Pressing the GREEN button is acknowledged by three short signals.
+* Pressing the RED button is acknowledged by one long signals.
+* Pressing the GREEN button is acknowledged by two short signals.
 * Pressing the WiFi button starts the data upload (see below).
 
 Pressing the RED/GREEN button writes the last received GPS information to log file.
@@ -37,10 +37,10 @@ Pressing the RED/GREEN button writes the last received GPS information to log fi
 
 The data upload process uploads the log data to server. After an successful upload the local
 log files are removed. Signals during the upload process
- * Pressing the WiFi button is acknowledged by five short signals.
+ * Pressing the WiFi button is acknowledged by three long signals.
  * When trying to connect to the WiFi the unit sends short signals.
  * If the device cannot connect to the WiFi network, the error code 6 is communicated.
- * After an successful upload the device sends three short signals.
+ * After an successful upload the device sends three long signals.
  * An failed upload is communicated by error code 7. In this case the WiFi connection was successful
    but the log server could not be contacted. The local data will be kept intact.
 
