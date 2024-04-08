@@ -167,11 +167,11 @@ void loop() {
     if (buttonWifiPressed()) {
         Serial.println("WIFI");
         appendDataFile((char *) "wifi");
-        beep(BEEP_DELAY_LONG, 3);
+        signalBeepWifi();
 
         wifiOnButton(WIFI_SSID, WIFI_PASS, LOG_SERVER_URL);
 
-        beep(BEEP_DELAY_LONG, 3);
+        signalBeepWifi();
 
         appendDataFile((char *) "data upload succeeded");
     }

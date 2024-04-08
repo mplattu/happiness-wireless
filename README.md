@@ -37,10 +37,10 @@ Pressing the RED/GREEN button writes the last received GPS information to log fi
 
 The data upload process uploads the log data to server. After an successful upload the local
 log files are removed. Signals during the upload process
- * Pressing the WiFi button is acknowledged by three long signals.
+ * Pressing the WiFi button is acknowledged by short-long-short signals.
  * When trying to connect to the WiFi the unit sends short signals.
  * If the device cannot connect to the WiFi network, the error code 6 is communicated.
- * After an successful upload the device sends three long signals.
+ * After an successful upload the device sends short-long-short signals.
  * An failed upload is communicated by error code 7. In this case the WiFi connection was successful
    but the log server could not be contacted. The local data will be kept intact.
 
