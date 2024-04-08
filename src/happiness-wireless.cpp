@@ -22,7 +22,7 @@ void IRAM_ATTR interruptHandlerButtonRed () {
 }
 
 bool buttonWifiPressed() {
-    if (analogRead(PIN_WIFI_BUTTON) > 1000) {
+    if (analogRead(PIN_WIFI_BUTTON) > 500) {
         return true;
     }
 
@@ -111,6 +111,8 @@ uint32_t unixTime = 0;
 char gpsDate[20] = "no-date";
 char gpsTime[20] = "no-time";
 char gpsDatetime[40] = "no-datetime";
+char * animation = (char*) ".oOo";
+byte animationPosition = 0;
 
 void loop() {
     while (gps_serial.available() > 0) {
@@ -163,6 +165,7 @@ void loop() {
     }
 
     if (buttonWifiPressed()) {
+        Serial.println("WIFI");
         appendDataFile((char *) "wifi");
         beep(BEEP_DELAY_LONG, 3);
 
@@ -172,4 +175,13 @@ void loop() {
 
         appendDataFile((char *) "data upload succeeded");
     }
+
+    Serial.print(' ');
+    Serial.print(animation[animationPosition]);
+    Serial.print('\r');
+    animationPosition++;
+    if (animationPosition > 3) {
+        animationPosition = 0;
+    }
+    delay(200);
 }
