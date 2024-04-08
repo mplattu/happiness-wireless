@@ -32,17 +32,9 @@ void writeErrorFile(String errorMessage) {
 }
 
 void signalBeepSos() {
-    for (int n=0; n < 3; n++) {
-        beep(100, 100);
-    }
-
-    for (int n=0; n < 3; n++) {
-        beep(500, 100);
-    }
-
-    for (int n=0; n < 3; n++) {
-        beep(100, 100);
-    }
+    beep(100, 3);
+    beep(500, 3);
+    beep(100, 3);
 }
 
 void signalBeepAndHalt(uint8_t errorCode, String errorMessage) {
