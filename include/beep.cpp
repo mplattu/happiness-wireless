@@ -37,6 +37,12 @@ void signalBeepSos() {
     beep(100, 3);
 }
 
+void signalBeepWifi() {
+    beep(100, 1);
+    beep(500, 1);
+    beep(100, 1);
+}
+
 void signalBeepAndHalt(uint8_t errorCode, String errorMessage) {
     writeErrorFile(errorMessage);
 
