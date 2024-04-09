@@ -27,8 +27,10 @@ the error code (see below). A successful initialisation process reports with thr
 
 After this the device starts the normal operation. Here, it receives the GPS data and waits an user
 action.
-* Pressing the RED button is acknowledged by one long signals.
+* Pressing the RED button is acknowledged by one long signal.
 * Pressing the GREEN button is acknowledged by two short signals.
+* The RED and GREEN buttons give with three short signals if number of satellites is zero or
+  the GPS location is older than three minutes.
 * Pressing the WiFi button starts the data upload (see below).
 
 Pressing the RED/GREEN button writes the last received GPS information to log file.
