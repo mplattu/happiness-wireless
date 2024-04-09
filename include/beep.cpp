@@ -43,6 +43,10 @@ void signalBeepWifi() {
     beep(100, 1);
 }
 
+void signalBeepNoGPS() {
+    beep(100, 3);
+}
+
 void signalBeepAndHalt(uint8_t errorCode, String errorMessage) {
     writeErrorFile(errorMessage);
 

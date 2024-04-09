@@ -7,6 +7,9 @@
 #include "../include/beep.cpp"
 #include "../include/wifi.cpp"
 
+// 3 minutes (3 * 60 * 1000)
+#define LOCATION_OUTDATED_MILLIS 180000
+
 TinyGPSPlus gps;
 SoftwareSerial gps_serial(PIN_GPS_RX, PIN_GPS_TX);
 
@@ -72,6 +75,21 @@ void appendDataFile(float latitude, float longitude, float altitude, float speed
     else {
         Serial.println("Could not open SD for writing");
     }
+}
+
+bool locationIsOutdated(uint32_t satellites, unsigned long locationUpdated) {
+    if (satellites == 0) {
+        Serial.println("Location is outdated because there are zero satellites");
+        return true;
+    }
+
+    unsigned long updatedMillisAgo = millis() - locationUpdated;
+    if (updatedMillisAgo > LOCATION_OUTDATED_MILLIS) {
+        Serial.println("Location is outdated because last GPS update is too old");
+        return true;
+    }
+
+    return false;
 }
 
 void setup() {
@@ -156,7 +174,14 @@ void loop() {
         Serial.println("RED");
         unsigned long locationUpdatedTime = millis() - locationUpdated;
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, locationUpdatedTime, (char *) "red");
-        beep(BEEP_DELAY_LONG, 1);
+        
+        if (locationIsOutdated(satellites, locationUpdated)) {
+            signalBeepNoGPS();
+        }
+        else {
+            beep(BEEP_DELAY_LONG, 1);
+        }
+
         buttonPressedRed = false;
     }
 
@@ -164,7 +189,14 @@ void loop() {
         Serial.println("GREEN");
         unsigned long locationUpdatedTime = millis() - locationUpdated;
         appendDataFile(latitude, longitude, altitude, speed, satellites, gpsDatetime, locationUpdatedTime, (char *) "green");
-        beep(BEEP_DELAY_SHORT, 2);
+        
+        if (locationIsOutdated(satellites, locationUpdated)) {
+            signalBeepNoGPS();
+        }
+        else {
+            beep(BEEP_DELAY_SHORT, 2);
+        }
+
         buttonPressedGreen = false;
     }
 
