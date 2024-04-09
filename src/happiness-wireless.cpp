@@ -32,7 +32,9 @@ bool buttonWifiPressed() {
 void appendDataFile(char * action) {
     File f = SD.open(FILENAME_DATA, FILE_WRITE);
     if (f) {
-        f.print("{\"action\":\"");
+        f.print("{\"device\":\"");
+        f.print(WiFi.macAddress());
+        f.print("\",\"action\":\"");
         f.print(action);
         f.println("\"}");
         f.close();
@@ -45,7 +47,9 @@ void appendDataFile(char * action) {
 void appendDataFile(float latitude, float longitude, float altitude, float speed, int satellites, char * datetime, unsigned long locationUpdatedTime, char * action) {
     File f = SD.open(FILENAME_DATA, FILE_WRITE);
     if (f) {
-        f.print("{\"latitude\":");
+        f.print("{\"device\":\"");
+        f.print(WiFi.macAddress());
+        f.print("\",\"latitude\":");
         f.print(latitude, 7);
         f.print(",\"longitude\":");
         f.print(longitude, 7);
