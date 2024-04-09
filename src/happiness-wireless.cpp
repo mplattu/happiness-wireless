@@ -64,7 +64,7 @@ void appendDataFile(float latitude, float longitude, float altitude, float speed
         f.print(satellites);
         f.print(",\"timestamp\":\"");
         f.print(datetime);
-        f.print(",\"locationUpdated\":\"");
+        f.print("\",\"locationUpdated\":\"");
         f.print(locationUpdatedTime);
         f.print("\",\"action\":\"");
         f.print(action);
