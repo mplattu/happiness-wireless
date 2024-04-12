@@ -78,14 +78,20 @@ void appendDataFile(float latitude, float longitude, float altitude, float speed
 }
 
 bool locationIsOutdated(uint32_t satellites, unsigned long locationUpdated) {
-    if (satellites == 0) {
-        Serial.println("Location is outdated because there are zero satellites");
+    if (satellites < 4) {
+        char buffer[50];
+        sprintf(buffer, "Location is outdated: only %d satellites", satellites);
+        appendDataFile(buffer);
+        Serial.println(buffer);
         return true;
     }
 
     unsigned long updatedMillisAgo = millis() - locationUpdated;
     if (updatedMillisAgo > LOCATION_OUTDATED_MILLIS) {
-        Serial.println("Location is outdated because last GPS update is too old");
+        char buffer[60];
+        sprintf(buffer, "Location is outdated: too old GPS: %lu > %d", updatedMillisAgo, LOCATION_OUTDATED_MILLIS);
+        appendDataFile(buffer);
+        Serial.println(buffer);
         return true;
     }
 
