@@ -61,6 +61,17 @@ Error codes:
 6. Failed to upload data to server (wifi connection)
 7. Failed to upload data to server (https connection)
 
+## Programming the Buttons
+
+1. Clear memory:
+  * Close switch > LED blink > Open switch > LED off > Close switch > LED blink > Open switch
+1. Teach new button:
+  * Close switch > LED blink > Press remote button > LED stady on
+
+You have to repeat the programming procedure for both red and green receiver.
+
+For more information see `doc/AUREL_RX_MHCS.pdf`
+
 ## Copyright Notice
 
 The documents in `doc/` folder are subject to their own copyrights.
