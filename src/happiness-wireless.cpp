@@ -10,6 +10,8 @@
 // 3 minutes (3 * 60 * 1000)
 #define LOCATION_OUTDATED_MILLIS 180000
 
+#define IGNORE_SATELLITES_WARNING
+
 TinyGPSPlus gps;
 SoftwareSerial gps_serial(PIN_GPS_RX, PIN_GPS_TX);
 
@@ -64,9 +66,9 @@ void appendDataFile(float latitude, float longitude, float altitude, float speed
         f.print(satellites);
         f.print(",\"timestamp\":\"");
         f.print(datetime);
-        f.print("\",\"locationUpdated\":\"");
+        f.print("\",\"locationUpdated\":");
         f.print(locationUpdatedTime);
-        f.print("\",\"action\":\"");
+        f.print(",\"action\":\"");
         f.print(action);
         f.print("\"");
         f.println("}");
@@ -78,6 +80,7 @@ void appendDataFile(float latitude, float longitude, float altitude, float speed
 }
 
 bool locationIsOutdated(uint32_t satellites, unsigned long locationUpdated) {
+#ifndef IGNORE_SATELLITES_WARNING    
     if (satellites < 4) {
         char buffer[50];
         sprintf(buffer, "Location is outdated: only %d satellites", satellites);
@@ -85,6 +88,7 @@ bool locationIsOutdated(uint32_t satellites, unsigned long locationUpdated) {
         Serial.println(buffer);
         return true;
     }
+#endif
 
     unsigned long updatedMillisAgo = millis() - locationUpdated;
     if (updatedMillisAgo > LOCATION_OUTDATED_MILLIS) {
@@ -128,14 +132,13 @@ void setup() {
     Serial.println("Initialised");
 }
 
-unsigned long locationUpdated = 0;
+unsigned long locationUpdated = LOCATION_OUTDATED_MILLIS;
 
 float latitude = 0;
 float longitude = 0;
 float altitude = 0;
 float speed = 0;
-uint32_t satellites = 0;
-uint32_t unixTime = 0;
+unsigned long satellites = 0;
 char gpsDate[20] = "no-date";
 char gpsTime[20] = "no-time";
 char gpsDatetime[40] = "no-datetime";
