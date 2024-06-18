@@ -14,7 +14,7 @@ function clean_ethernet_address($address) {
 }
 
 function add_log_entry($data) {
-	$f = fopen(DATA_PATH, "a");
+	$f = fopen(DATA_PATH.'/log', "a");
 	fwrite($f, get_timestring()."\t$data\n");
 	fclose($f);
 }
@@ -31,7 +31,7 @@ function get_date($datetime) {
 function get_device_statistics($device) {
 	$statistics = [];
 
-	$f = fopen(DATA_PATH, "r");
+	$f = fopen(DATA_PATH.'/log', "r");
 
 	while (($line = fgets($f)) !== false) {
 		$line_array = explode("\t", $line, 2);
@@ -77,6 +77,37 @@ function show_device_status($device) {
 	echo(statistics_to_table($device_stats));
 }
 
+function is_admin_password($password) {
+	$password_file = DATA_PATH.'/admin_password';
+
+	if (!file_exists($password_file)) {
+		return false;
+	}
+
+	$f = fopen($password_file, "r");
+	$line = fgets($f);
+	fclose($f);
+
+	$user_pw_hash = hash('sha256', $password);
+	$admin_pw_hash = preg_replace('/[^0-9a-f]/', '', $line);
+
+	if ($user_pw_hash == $admin_pw_hash) {
+		return true;
+	}
+
+	return false;
+}
+
+function print_raw_log() {
+	$f = fopen(DATA_PATH.'/log', "r");
+
+	while (($line = fgets($f)) !== false) {
+		echo($line);
+	}
+
+	fclose($f);
+}
+
 function show_query_page() {
 	echo(HTML_PREFIX);
 	echo('<h1>Enter device code</h1>
@@ -95,8 +126,12 @@ if (@$_POST['data']) {
 	http_response_code(200);
 }
 elseif (@$_POST['device']) {
-	$device = clean_ethernet_address(strtoupper($_POST['device']));
-	if ($device) {
+	$device = clean_ethernet_address(strtoupper(@$_POST['device']));
+	if (is_admin_password(@$_POST['device'])) {
+		header("Content-type: text/plain");
+		print_raw_log();
+	}
+	elseif ($device) {
 		header("Content-type: text/html");
 		echo(HTML_PREFIX);
 		echo("<h1>$device</h1>");

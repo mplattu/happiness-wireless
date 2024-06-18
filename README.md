@@ -7,6 +7,8 @@ project.
 The aim is to create a device which stores GPS location whenever either of the
 two wireless buttons are pressed.
 
+# Device
+
 The device is a ESP8266-based microcontroller with following components:
 * ESP8266 Wemos D1
 * Two AUREL RX-4MHCS 4 channel receivers ([manual](https://www.aurelwireless.com/wp-content/uploads/user-manual/650200997G_um.pdf))
@@ -72,7 +74,23 @@ You have to repeat the programming procedure for both red and green receiver.
 
 For more information see `doc/AUREL_RX_MHCS.pdf`
 
-## Copyright Notice
+# Server
+
+The `src/` directory contains a small PHP server which
+ * receives data uploads from devices
+ * allows device users to check that their devices and data upload is working
+ * allows device fleet administrator to download log file
+
+## Setup
+
+The setup is simple:
+ 1. Copy the `index.php` to PHP-enabled directory
+ 1. Rename `settings.php.sample` to `settings.php` and edit constant `DATA_PATH` to point a directory where the web server has write access
+ 1. Create sha256 digest from your password:\
+    `echo -n "my admin password" | sha256sum`
+ 1. Place this hash digest to `admin_password` file in `DATA_PATH` directory. Add a newline after the hash string.
+
+# Copyright Notice
 
 The documents in `doc/` folder are subject to their own copyrights.
 

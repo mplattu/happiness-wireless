@@ -1,6 +1,6 @@
 <?php
 
-// Path for common data file
-define('DATA_PATH', sys_get_temp_dir().'/log');
+// Path for common data directory - should writeable by server
+define('DATA_PATH', sys_get_temp_dir());
 
 ?>
